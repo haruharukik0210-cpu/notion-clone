@@ -1,0 +1,219 @@
+/* Layout Styles */
+.layout-container {
+  height: 100%;
+  display: flex;
+}
+
+.layout-main {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  height: 100%;
+  background-color: var(--color-neutral-100);
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 15rem; /* 240px */
+}
+
+.sidebar-spacer {
+  margin-top: var(--spacing-4);
+}
+
+.sidebar-placeholder {
+  position: absolute;
+  top: 0;
+  z-index: var(--z-modal);
+  left: 15rem;
+  width: calc(100% - 15rem);
+}
+
+/* Sidebar Item Styles */
+.sidebar-item {
+  min-height: 1.6875rem; /* 27px */
+  font-size: var(--font-sm);
+  padding-top: var(--spacing-1);
+  padding-bottom: var(--spacing-1);
+  padding-right: var(--spacing-3);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: var(--color-muted-foreground);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+}
+
+.sidebar-item.active {
+  background-color: var(--color-neutral-200);
+}
+
+.sidebar-item-icon {
+  flex-shrink: 0;
+  width: 1.125rem; /* 18px */
+  height: 1.125rem; /* 18px */
+  margin-right: var(--spacing-2);
+  color: var(--color-muted-foreground);
+}
+
+.sidebar-item-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* User Item Styles */
+.user-item-trigger {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-sm);
+  padding: var(--spacing-3);
+  width: 100%;
+}
+
+.user-item-trigger:hover {
+  background-color: rgba(var(--color-primary), 0.05);
+}
+
+.user-item-info {
+  gap: var(--spacing-2);
+  display: flex;
+  align-items: center;
+  max-width: 9.375rem; /* 150px */
+}
+
+.user-item-name {
+  text-align: start;
+  font-weight: var(--font-medium);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.user-item-chevron {
+  transform: rotate(90deg);
+  margin-left: var(--spacing-2);
+  color: var(--color-muted-foreground);
+  width: 1rem;
+  height: 1rem;
+}
+
+.user-item-dropdown {
+  width: 20rem;
+}
+
+.user-item-dropdown-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  padding: var(--spacing-2);
+}
+
+.user-item-email {
+  font-size: var(--font-xs);
+  font-weight: var(--font-medium);
+  line-height: 1;
+  color: var(--color-muted-foreground);
+}
+
+.user-item-name-display {
+  font-size: var(--font-sm);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.user-item-logout {
+  width: 100%;
+  cursor: pointer;
+  color: var(--color-muted-foreground);
+}
+
+/* Note List Styles */
+.note-list-empty {
+  visibility: hidden;
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-muted-foreground);
+  opacity: 0.8;
+}
+
+.note-list-empty.show {
+  visibility: visible;
+}
+
+/* Note Item Styles */
+.note-item-menu-container {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  opacity: 0;
+  transition: opacity var(--transition-base) ease-in-out;
+}
+
+.note-item:hover .note-item-menu-container {
+  opacity: 1;
+}
+
+.note-item-menu-button {
+  height: 100%;
+  margin-left: auto;
+  border-radius: var(--radius-sm);
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.note-item-menu-button:hover {
+  background-color: var(--color-neutral-300);
+}
+
+.note-item-menu-icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-muted-foreground);
+}
+
+.note-item-dropdown {
+  width: 15rem;
+}
+
+.note-item-delete-icon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: var(--spacing-2);
+}
+
+/* Title Input Styles */
+.title-input-container {
+  padding-left: 3.375rem; /* 54px */
+  position: relative;
+}
+
+.title-input {
+  font-size: var(--font-5xl);
+  background-color: transparent;
+  font-weight: var(--font-bold);
+  word-wrap: break-word;
+  outline: none;
+  color: var(--color-title);
+  resize: none;
+  border: none;
+  width: 100%;
+  field-sizing: content;
+  min-height: 1em;
+  overflow: hidden;
+}
+
+/* App Container */
+.app-container {
+  height: 100%;
+}

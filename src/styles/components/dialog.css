@@ -1,0 +1,108 @@
+/* Dialog Component Styles */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-dropdown);
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.dialog-content {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: var(--z-dropdown);
+  display: grid;
+  width: 100%;
+  max-width: 32rem;
+  translate: -50% -50%;
+  gap: var(--spacing-4);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-lg);
+  duration: var(--transition-base);
+  border-radius: var(--radius-lg);
+}
+
+@media (min-width: 640px) {
+  .dialog-content {
+    border-radius: var(--radius-lg);
+  }
+}
+
+.dialog-close {
+  position: absolute;
+  right: var(--spacing-4);
+  top: var(--spacing-4);
+  border-radius: var(--radius-sm);
+  opacity: 0.7;
+  transition: opacity var(--transition-base) ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.dialog-close:hover {
+  opacity: 1;
+}
+
+.dialog-close:focus {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+.dialog-close:disabled {
+  pointer-events: none;
+}
+
+.dialog-close[data-state="open"] {
+  background-color: var(--color-accent);
+  color: var(--color-muted-foreground);
+}
+
+.dialog-close-icon {
+  height: 1rem;
+  width: 1rem;
+}
+
+.dialog-header {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-1) * 1.5);
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .dialog-header {
+    text-align: left;
+  }
+}
+
+.dialog-footer {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+@media (min-width: 640px) {
+  .dialog-footer {
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: var(--spacing-2);
+  }
+}
+
+.dialog-title {
+  font-size: var(--font-lg);
+  font-weight: var(--font-semibold);
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.dialog-description {
+  font-size: var(--font-sm);
+  color: var(--color-muted-foreground);
+}

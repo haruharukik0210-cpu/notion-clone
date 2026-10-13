@@ -1,0 +1,119 @@
+/* Command Component Styles */
+.command {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background-color: var(--color-popover);
+  color: var(--color-popover-foreground);
+}
+
+.command-dialog .dialog-content {
+  overflow: hidden;
+  padding: 0;
+  box-shadow: var(--shadow-lg);
+}
+
+.command-dialog .command {
+  height: auto;
+  max-height: 300px;
+}
+
+.command-input-wrapper {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--spacing-3);
+}
+
+.command-input-icon {
+  margin-right: var(--spacing-2);
+  height: 1rem;
+  width: 1rem;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+.command-input {
+  display: flex;
+  height: 2.75rem;
+  width: 100%;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  padding: var(--spacing-3);
+  font-size: var(--font-sm);
+  outline: none;
+  border: none;
+}
+
+.command-input::placeholder {
+  color: var(--color-muted-foreground);
+}
+
+.command-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.command-list {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.command-empty {
+  padding: var(--spacing-6) 0;
+  text-align: center;
+  font-size: var(--font-sm);
+}
+
+.command-group {
+  overflow: hidden;
+  padding: var(--spacing-1);
+  color: var(--color-foreground);
+}
+
+.command-group-heading {
+  padding: calc(var(--spacing-1) * 1.5) var(--spacing-2) var(--spacing-2);
+  font-size: var(--font-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-muted-foreground);
+}
+
+.command-separator {
+  margin-left: calc(var(--spacing-1) * -1);
+  margin-right: calc(var(--spacing-1) * -1);
+  height: 1px;
+  background-color: var(--color-border);
+}
+
+.command-item {
+  position: relative;
+  display: flex;
+  cursor: default;
+  user-select: none;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  padding: calc(var(--spacing-1) * 1.5) var(--spacing-2);
+  font-size: var(--font-sm);
+  outline: none;
+}
+
+.command-item[data-selected="true"] {
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+.command-item[data-disabled="true"] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.command-shortcut {
+  margin-left: auto;
+  font-size: var(--font-xs);
+  letter-spacing: 0.1em;
+  color: var(--color-muted-foreground);
+}

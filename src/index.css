@@ -1,0 +1,15 @@
+/* Import all global styles */
+@import './styles/reset.css';
+@import './styles/variables.css';
+@import './styles/animations.css';
+@import './styles/layout.css';
+@import './styles/components/button.css';
+@import './styles/components/card.css';
+@import './styles/components/input.css';
+@import './styles/components/dialog.css';
+@import './styles/components/dropdown-menu.css';
+@import './styles/components/popover.css';
+@import './styles/components/command.css';
+@import './styles/pages/auth.css';
+@import './styles/pages/home.css';
+@import './styles/pages/note-detail.css';

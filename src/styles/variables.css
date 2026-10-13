@@ -1,0 +1,90 @@
+/* CSS Variables */
+:root {
+  /* Colors */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-slate-900: #0f172a;
+  --color-slate-500: #64748b;
+  --color-gray-100: #f3f4f6;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-700: #374151;
+  --color-gray-900: #111827;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-950: #0a0a0a;
+  --color-title: #3f3f3f;
+
+  /* Semantic Colors */
+  --color-background: hsl(0, 0%, 100%);
+  --color-foreground: hsl(0, 0%, 3.9%);
+  --color-card: hsl(0, 0%, 100%);
+  --color-card-foreground: hsl(0, 0%, 3.9%);
+  --color-popover: hsl(0, 0%, 100%);
+  --color-popover-foreground: hsl(0, 0%, 3.9%);
+  --color-primary: hsl(0, 0%, 9%);
+  --color-primary-foreground: hsl(0, 0%, 98%);
+  --color-secondary: hsl(0, 0%, 96.1%);
+  --color-secondary-foreground: hsl(0, 0%, 9%);
+  --color-muted: hsl(0, 0%, 96.1%);
+  --color-muted-foreground: hsl(0, 0%, 45.1%);
+  --color-accent: hsl(0, 0%, 96.1%);
+  --color-accent-foreground: hsl(0, 0%, 9%);
+  --color-border: hsl(0, 0%, 89.8%);
+  --color-input: hsl(0, 0%, 89.8%);
+  --color-ring: hsl(0, 0%, 3.9%);
+
+  /* Border Radius */
+  --radius: 0.5rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+
+  /* Spacing */
+  --spacing-1: 0.25rem; /* 4px */
+  --spacing-2: 0.5rem; /* 8px */
+  --spacing-3: 0.75rem; /* 12px */
+  --spacing-4: 1rem; /* 16px */
+  --spacing-6: 1.5rem; /* 24px */
+  --spacing-8: 2rem; /* 32px */
+  --spacing-10: 2.5rem; /* 40px */
+  --spacing-12: 3rem; /* 48px */
+  --spacing-20: 5rem; /* 80px */
+  --spacing-40: 10rem; /* 160px */
+
+  /* Typography */
+  --font-xs: 0.75rem; /* 12px */
+  --font-sm: 0.875rem; /* 14px */
+  --font-base: 1rem; /* 16px */
+  --font-lg: 1.125rem; /* 18px */
+  --font-xl: 1.25rem; /* 20px */
+  --font-2xl: 1.5rem; /* 24px */
+  --font-3xl: 1.875rem; /* 30px */
+  --font-5xl: 3rem; /* 48px */
+
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+
+  /* Transitions */
+  --transition-fast: 150ms;
+  --transition-base: 200ms;
+  --transition-slow: 300ms;
+
+  /* Z-Index */
+  --z-dropdown: 50;
+  --z-modal: 99999;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Breakpoints (for reference in media queries) */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+}

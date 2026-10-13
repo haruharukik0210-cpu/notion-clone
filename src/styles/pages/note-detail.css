@@ -1,0 +1,23 @@
+/* Note Detail Page Styles */
+.note-detail-container {
+  padding-bottom: var(--spacing-40);
+  padding-top: var(--spacing-20);
+}
+
+.note-detail-content {
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .note-detail-content {
+    max-width: 48rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .note-detail-content {
+    max-width: 56rem;
+  }
+}
