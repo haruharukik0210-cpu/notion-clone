@@ -13,7 +13,7 @@
 /* Sidebar Styles */
 .sidebar {
   height: 100%;
-  background-color: var(--color-neutral-100);
+  background-color: var(--color-sidebar);
   overflow-y: auto;
   position: relative;
   display: flex;
@@ -49,7 +49,7 @@
 }
 
 .sidebar-item.active {
-  background-color: var(--color-neutral-200);
+  background-color: var(--color-sidebar-active);
 }
 
 .sidebar-item-icon {
@@ -76,7 +76,7 @@
 }
 
 .user-item-trigger:hover {
-  background-color: rgba(var(--color-primary), 0.05);
+  background-color: color-mix(in srgb, var(--color-primary) 5%, transparent);
 }
 
 .user-item-info {
@@ -173,7 +173,7 @@
 }
 
 .note-item-menu-button:hover {
-  background-color: var(--color-neutral-300);
+  background-color: var(--color-hover);
 }
 
 .note-item-menu-icon {

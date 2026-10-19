@@ -25,8 +25,8 @@
 }
 
 .btn-primary {
-  background-color: var(--color-slate-900);
-  color: var(--color-white);
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
   padding: var(--spacing-2) var(--spacing-4);
   border: 1px solid transparent;
   border-radius: var(--radius-md);
@@ -34,7 +34,7 @@
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #1e293b;
+  background-color: var(--color-primary-hover);
 }
 
 .btn-icon {
@@ -48,5 +48,5 @@
 }
 
 .btn-icon:hover {
-  background-color: var(--color-neutral-300);
+  background-color: var(--color-hover);
 }

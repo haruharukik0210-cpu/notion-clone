@@ -5,6 +5,9 @@ import { FiPlus, FiSearch } from 'react-icons/fi';
 import { useNoteStore } from '../../modules/notes/notes.state';
 import { noteRepository } from '../../modules/notes/note.repository';
 import { useNavigate } from 'react-router-dom';
+import { useAtom } from 'jotai';
+import { themeAtom } from '../../modules/theme/theme.state';
+import ThemeToggle from './ThemeToggle';
 
 interface Props {
   onSearchClick?: () => void;
@@ -13,6 +16,7 @@ interface Props {
 export default function SideBar({ onSearchClick }: Props) {
   const noteStore = useNoteStore(); 
   const navigate = useNavigate();
+  const [theme, setTheme] = useAtom(themeAtom);
 
   const createNote = async () => {
     try {
@@ -23,6 +27,10 @@ export default function SideBar({ onSearchClick }: Props) {
       console.error(error);
       alert("ノートの作成に失敗しました。");
     } 
+  }
+
+  const toggleTheme = () => {
+    setTheme((prev) => prev === "light" ? "dark" : "light");
   }
 
   return (
@@ -36,6 +44,7 @@ export default function SideBar({ onSearchClick }: Props) {
               icon={FiSearch}
               onClick={onSearchClick}
             />
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
           </div>
           <div className='sidebar-spacer'>
             <NoteList />

@@ -6,16 +6,23 @@ import Home from "./pages/Home";
 import NoteDetail from "./pages/NoteDetail";
 import { useEffect, useState } from "react";
 import { currentUserAtom } from "./modules/auth/current-user.state";
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { authRepository } from "./modules/auth/auth.repository";
+import { themeAtom } from "./modules/theme/theme.state";
 
 function App() {
 	const [isLoading, setIsLoading] = useState(true);
 	const setCurrentUser = useSetAtom(currentUserAtom);
+	const theme = useAtomValue(themeAtom);
 
 	useEffect(() => {
 		fetchCurrentUser();
 	}, []);
+
+	useEffect(() => {
+		document.documentElement.setAttribute("data-theme", theme);
+		localStorage.setItem("theme", theme);
+	}, [theme]);
 
 	const fetchCurrentUser = async () => {
 		try {
@@ -28,7 +35,7 @@ function App() {
 		}
 	};
 
-	if(isLoading) return <div />
+	if (isLoading) return <div />;
 
 	return (
 		<BrowserRouter>

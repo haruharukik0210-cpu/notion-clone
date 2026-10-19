@@ -21,3 +21,11 @@
     max-width: 56rem;
   }
 }
+
+/* BlockNote エディタの配色をアプリのテーマ変数に合わせる
+   （BlockNote 側の .bn-root[data-color-scheme] より詳細度を上げて上書き） */
+.note-detail-content .bn-root[data-color-scheme] {
+  --bn-colors-editor-background: var(--color-background);
+  --bn-colors-menu-background: var(--color-popover);
+  --bn-colors-menu-text: var(--color-popover-foreground);
+}

@@ -22,9 +22,9 @@ interface Props {
 	onCreate?: (event: React.MouseEvent<Element>) => void;
 	onExpand?: (event: React.MouseEvent<Element>) => void;
 	layer?: number;
-  expanded?: boolean;
-  onClick?: () => void;
-  onDelete: (event: React.MouseEvent<Element>) => void;
+	expanded?: boolean;
+	onClick?: () => void;
+	onDelete: (event: React.MouseEvent<Element>) => void;
 }
 
 export default function NoteItem({
@@ -32,9 +32,9 @@ export default function NoteItem({
 	onCreate,
 	onExpand,
 	layer = 0,
-  expanded = false,
-  onClick,
-  onDelete
+	expanded = false,
+	onClick,
+	onDelete,
 }: Props) {
 	const [isHovered, setIsHovered] = useState(false);
 
@@ -73,8 +73,8 @@ export default function NoteItem({
 			role="button"
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
-			style={{ paddingLeft: `${layer * 12 + 12}px` }} 
-      onClick={onClick}
+			style={{ paddingLeft: `${layer * 12 + 12}px` }}
+			onClick={onClick}
 		>
 			<Item
 				icon={getIcon()}

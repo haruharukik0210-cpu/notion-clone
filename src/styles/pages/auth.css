@@ -1,7 +1,7 @@
 /* Auth Pages (Signin, Signup) Styles */
 .auth-container {
   min-height: 100vh;
-  background-color: var(--color-gray-100);
+  background-color: var(--color-muted);
   padding: var(--spacing-10) var(--spacing-4);
 }
 
@@ -28,7 +28,7 @@
 .auth-title {
   font-size: var(--font-3xl);
   font-weight: var(--font-extrabold);
-  color: var(--color-gray-900);
+  color: var(--color-foreground);
 }
 
 .auth-form-container {
@@ -38,7 +38,7 @@
 }
 
 .auth-card {
-  background-color: var(--color-white);
+  background-color: var(--color-card);
   padding: var(--spacing-8) var(--spacing-4);
   box-shadow: var(--shadow);
 }
@@ -61,7 +61,7 @@
   display: block;
   font-size: var(--font-sm);
   font-weight: var(--font-medium);
-  color: var(--color-gray-700);
+  color: var(--color-foreground);
 }
 
 .auth-input-container {

@@ -34,6 +34,13 @@
   --color-border: hsl(0, 0%, 89.8%);
   --color-input: hsl(0, 0%, 89.8%);
   --color-ring: hsl(0, 0%, 3.9%);
+  --color-primary-hover: #1e293b;
+  --color-sidebar: var(--color-neutral-100);
+  --color-sidebar-active: var(--color-neutral-200);
+  --color-hover: var(--color-neutral-300);
+
+  /* ブラウザ標準のUI（スクロールバー・フォーム部品）の配色 */
+  color-scheme: light;
 
   /* Border Radius */
   --radius: 0.5rem;
@@ -87,4 +94,33 @@
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
+}
+
+/* Dark Theme: <html data-theme="dark"> のときだけ Semantic Colors を上書き */
+[data-theme="dark"] {
+  --color-title: hsl(0, 0%, 90%);
+
+  --color-background: hsl(0, 0%, 9.8%);
+  --color-foreground: hsl(0, 0%, 90%);
+  --color-card: hsl(0, 0%, 12.5%);
+  --color-card-foreground: hsl(0, 0%, 90%);
+  --color-popover: hsl(0, 0%, 14.5%);
+  --color-popover-foreground: hsl(0, 0%, 90%);
+  --color-primary: hsl(0, 0%, 95%);
+  --color-primary-foreground: hsl(0, 0%, 9%);
+  --color-secondary: hsl(0, 0%, 18%);
+  --color-secondary-foreground: hsl(0, 0%, 95%);
+  --color-muted: hsl(0, 0%, 18%);
+  --color-muted-foreground: hsl(0, 0%, 63%);
+  --color-accent: hsl(0, 0%, 20%);
+  --color-accent-foreground: hsl(0, 0%, 95%);
+  --color-border: hsl(0, 0%, 22%);
+  --color-input: hsl(0, 0%, 26%);
+  --color-ring: hsl(0, 0%, 83%);
+  --color-primary-hover: hsl(0, 0%, 82%);
+  --color-sidebar: hsl(0, 0%, 12.5%);
+  --color-sidebar-active: hsl(0, 0%, 18%);
+  --color-hover: hsl(0, 0%, 24%);
+
+  color-scheme: dark;
 }

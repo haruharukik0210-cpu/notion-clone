@@ -3,10 +3,10 @@
   z-index: var(--z-dropdown);
   width: 18rem;
   border-radius: var(--radius-md);
-  border: 1px solid var(--color-neutral-200);
-  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-popover);
   padding: var(--spacing-4);
-  color: var(--color-neutral-950);
+  color: var(--color-popover-foreground);
   box-shadow: var(--shadow-md);
   outline: none;
 }
