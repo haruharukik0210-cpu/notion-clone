@@ -11,6 +11,7 @@
 @import './styles/components/popover.css';
 @import './styles/components/command.css';
 @import './styles/components/trash-modal.css';
+@import './styles/components/archived-banner.css';
 @import './styles/pages/auth.css';
 @import './styles/pages/home.css';
 @import './styles/pages/note-detail.css';

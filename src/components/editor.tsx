@@ -8,10 +8,11 @@ import { useAtomValue } from "jotai";
 interface Props {
 	initialContent?: string | null;
 	onChange: (value: string) => void;
+	readOnly?: boolean;
 }
 
 
-export function Editor({ initialContent, onChange }: Props) {
+export function Editor({ initialContent, onChange, readOnly = false }: Props) {
 	const theme = useAtomValue(themeAtom);
 	
 	const editor = useCreateBlockNote({
@@ -24,6 +25,7 @@ export function Editor({ initialContent, onChange }: Props) {
 			<BlockNoteView
 				theme={theme}
 				editor={editor}
+				editable={!readOnly}
 				onChange={() => onChange(JSON.stringify(editor.document))}
 			/>
 		</div>

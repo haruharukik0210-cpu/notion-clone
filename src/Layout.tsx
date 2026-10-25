@@ -25,16 +25,27 @@ export default function Layout() {
 	}, []);
 	const fetchNotes = async () => {
 		setIsLoading(true);
-		const notes = await noteRepository.find();
-		noteStore.set(notes);
-		setIsLoading(false);
-		console.log("取得したノート:", notes);
+		try {
+			const notes = await noteRepository.find();
+			noteStore.set(notes);
+		} catch (error) {
+			console.error(error);
+			alert("ノートの読み込みに失敗しました。");
+		} finally {
+			// 成功しても失敗しても、読み込み中の表示は終わらせる
+			setIsLoading(false);
+		}
 	};
 
 	const searchNotes = async (keyword: string) => {
-		const notes = await noteRepository.find({ keyword });
-		noteStore.set(notes);
-		setSearchResult(notes);
+		try {
+			const notes = await noteRepository.find({ keyword });
+			noteStore.set(notes);
+			setSearchResult(notes);
+		} catch (error) {
+			console.error(error);
+			alert("検索に失敗しました。");
+		}
 	};
 
 	const moveToDetail = (noteId: number) => {
@@ -50,23 +61,57 @@ export default function Layout() {
 	const fetchTrash = async () => {
 		const archivedNotes = await noteRepository.findTrash();
 		setNotes(archivedNotes);
-	}
+	};
 
 	const onTrashClick = async () => {
-		await fetchTrash();
-		setIsOpen(true);
+		try {
+			await fetchTrash();
+			setIsOpen(true);
+		} catch (error) {
+			console.error(error);
+			alert("ゴミ箱の読み込みに失敗しました。");
+		}
 	};
 
 	const onDelete = async (noteId: number) => {
-		await noteRepository.delete(noteId);
-		noteStore.delete(noteId);
-		await fetchTrash();
+		if (!confirm("このノートを完全に削除しますか？元に戻せません。")) return;
+		try {
+			await noteRepository.delete(noteId);
+			noteStore.delete(noteId);
+			await fetchTrash();
+		} catch (error) {
+			console.error(error);
+			alert("ノートの削除に失敗しました。");
+		}
 	};
 
 	const onRestore = async (noteId: number) => {
-		const restoredNote = await noteRepository.restore(noteId);
-		noteStore.set([restoredNote]);
-		await fetchTrash();
+		try {
+			const restoredNote = await noteRepository.restore(noteId);
+			noteStore.set([restoredNote]);
+			await fetchTrash();
+		} catch (error) {
+			console.error(error);
+			alert("ノートの復元に失敗しました。");
+		}
+	};
+
+	// ノートの親 → 親の親…とさかのぼり、「旅行の計画 / 持ち物リスト」の形で返す
+	const getPath = (note: Note): string => {
+		// 親は「ゴミ箱の一覧」か「サイドバーのストア」のどちらかにいる
+		const allNotes = [...notes, ...noteStore.getAll()];
+		let current = note;
+		const titles: string[] = [];
+
+		// 親がいる間、繰り返す
+		while (current.parentId != null) {
+			const parent = allNotes.find((n) => n.id === current.parentId);
+			if (!parent) break; // 親が読み込まれていなければ、そこで終わり
+			titles.unshift(parent.title || "無題"); // 先頭に追加 → 上の階層が先頭に来る
+			current = parent; // 次は親の親を探す
+		}
+
+		return titles.join(" / ");
 	};
 
 	if (!currentUser) return <Navigate to="/signin" replace />;
@@ -96,6 +141,7 @@ export default function Layout() {
 				onDelete={onDelete}
 				onItemSelect={onItemSelect}
 				onRestore={onRestore}
+				getPath={getPath}
 			/>
 		</div>
 	);
