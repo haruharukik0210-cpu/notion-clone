@@ -1,0 +1,102 @@
+/* Trash Modal Styles */
+.trash-modal {
+  max-width: 28rem;
+}
+
+.trash-modal-empty {
+  padding: var(--spacing-6) 0;
+  text-align: center;
+  font-size: var(--font-sm);
+  color: var(--color-muted-foreground);
+}
+
+.trash-modal-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  max-height: 20rem;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.trash-modal-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-1) var(--spacing-2);
+  transition: background-color var(--transition-fast) ease-in-out;
+}
+
+.trash-modal-item:hover {
+  background-color: var(--color-accent);
+}
+
+.trash-modal-item-title {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-1) 0;
+  background: transparent;
+  border: none;
+  color: var(--color-foreground);
+  font-size: var(--font-sm);
+  text-align: left;
+  cursor: pointer;
+}
+
+.trash-modal-item-title svg {
+  flex-shrink: 0;
+  color: var(--color-muted-foreground);
+}
+
+.trash-modal-item-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.trash-modal-item-name,
+.trash-modal-item-path {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trash-modal-item-path {
+  font-size: var(--font-xs);
+  color: var(--color-muted-foreground);
+}
+
+.trash-modal-item-actions {
+  display: flex;
+  gap: var(--spacing-1);
+}
+
+.trash-modal-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: none;
+  color: var(--color-muted-foreground);
+  cursor: pointer;
+  transition: background-color var(--transition-fast) ease-in-out,
+              color var(--transition-fast) ease-in-out;
+}
+
+.trash-modal-action:hover {
+  background-color: var(--color-hover);
+  color: var(--color-foreground);
+}
+
+.trash-modal-action-danger:hover {
+  color: var(--color-destructive);
+}
