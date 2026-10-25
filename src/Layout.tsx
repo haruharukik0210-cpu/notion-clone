@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useNoteStore } from "./modules/notes/notes.state";
 import { noteRepository } from "./modules/notes/note.repository";
 import type { Note } from "./modules/notes/note.entity";
+import TrashModal from "./components/TrashModal";
 
 export default function Layout() {
 	const currentUser = useAtomValue(currentUserAtom);
@@ -15,6 +16,8 @@ export default function Layout() {
 	const noteStore = useNoteStore();
 	const [isShowModal, setIsShowModal] = useState(false);
 	const [searchResult, setSearchResult] = useState<Note[]>([]);
+	const [isOpen, setIsOpen] = useState(false);
+	const [notes, setNotes] = useState<Note[]>([]);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -39,11 +42,43 @@ export default function Layout() {
 		setIsShowModal(false);
 	};
 
+	const onItemSelect = (noteId: number) => {
+		navigate(`/notes/${noteId}`);
+		setIsOpen(false);
+	};
+
+	const fetchTrash = async () => {
+		const archivedNotes = await noteRepository.findTrash();
+		setNotes(archivedNotes);
+	}
+
+	const onTrashClick = async () => {
+		await fetchTrash();
+		setIsOpen(true);
+	};
+
+	const onDelete = async (noteId: number) => {
+		await noteRepository.delete(noteId);
+		noteStore.delete(noteId);
+		await fetchTrash();
+	};
+
+	const onRestore = async (noteId: number) => {
+		const restoredNote = await noteRepository.restore(noteId);
+		noteStore.set([restoredNote]);
+		await fetchTrash();
+	};
+
 	if (!currentUser) return <Navigate to="/signin" replace />;
 
 	return (
 		<div className="layout-container">
-			{!isLoading && <SideBar onSearchClick={() => setIsShowModal(true)} />}
+			{!isLoading && (
+				<SideBar
+					onSearchClick={() => setIsShowModal(true)}
+					onTrashClick={onTrashClick}
+				/>
+			)}
 			<main className="layout-main">
 				<Outlet />
 			</main>
@@ -53,6 +88,14 @@ export default function Layout() {
 				notes={searchResult}
 				onKeywordChange={searchNotes}
 				onItemSelect={moveToDetail}
+			/>
+			<TrashModal
+				onClose={() => setIsOpen(false)}
+				isOpen={isOpen}
+				notes={notes}
+				onDelete={onDelete}
+				onItemSelect={onItemSelect}
+				onRestore={onRestore}
 			/>
 		</div>
 	);

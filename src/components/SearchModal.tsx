@@ -15,7 +15,7 @@ interface Props {
 	onClose: () => void;
 	notes: Note[];
 	onKeywordChange: (keyword: string) => void;
-  onItemSelect: (noteId: number) => void;
+	onItemSelect: (noteId: number) => void;
 }
 
 export default function SearchModal({
@@ -23,10 +23,9 @@ export default function SearchModal({
 	onClose,
 	notes,
 	onKeywordChange,
-	onItemSelect
+	onItemSelect,
 }: Props) {
-
-  const debounce = useDebouncedCallback(onKeywordChange, 500);
+	const debounce = useDebouncedCallback(onKeywordChange, 500);
 	return (
 		<CommandDialog open={isOpen} onOpenChange={onClose}>
 			<Command shouldFilter={false}>
@@ -34,11 +33,15 @@ export default function SearchModal({
 				<CommandList>
 					<CommandEmpty>条件に一致するノートがありません</CommandEmpty>
 					<CommandGroup>
-            {notes.map(note => (
-              <CommandItem key={note.id} title={note.title ?? "無題"} onSelect={() => onItemSelect(note.id)}>
-                <span>{note.title}</span>
-              </CommandItem>
-            ))}
+						{notes.map((note) => (
+							<CommandItem
+								key={note.id}
+								title={note.title ?? "無題"}
+								onSelect={() => onItemSelect(note.id)}
+							>
+								<span>{note.title}</span>
+							</CommandItem>
+						))}
 					</CommandGroup>
 				</CommandList>
 			</Command>

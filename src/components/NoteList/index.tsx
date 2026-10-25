@@ -43,11 +43,11 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 	const deleteNote = async (e:React.MouseEvent<Element>, noteId: number) => {
 		try {
 			e.preventDefault();
-			await noteRepository.delete(noteId);
+			await noteRepository.archive(noteId);
 			noteStore.delete(noteId);
 			navigate("/")
 		} catch(error) {
-			console.error("");
+			console.error(error);
 		}
 	}
 
