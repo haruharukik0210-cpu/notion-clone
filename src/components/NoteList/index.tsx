@@ -19,37 +19,48 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 
 	const createChild = async (e: React.MouseEvent<Element>, parentId: number) => {
 		e.preventDefault();
-		const newNote = await noteRepository.create({ parentId });
-		noteStore.set([newNote]);
-		setExpanded((prev) => {
-			const newExpanded = new Map(prev);
-			newExpanded.set(parentId, true);
-			return newExpanded;
-		});
-		moveToDetail(newNote.id);
+		try {
+			const newNote = await noteRepository.create({ parentId });
+			noteStore.set([newNote]);
+			setExpanded((prev) => {
+				const newExpanded = new Map(prev);
+				newExpanded.set(parentId, true);
+				return newExpanded;
+			});
+			moveToDetail(newNote.id);
+		} catch (error) {
+			console.error(error);
+			alert("ノートの作成に失敗しました。");
+		}
 	};
 
 	const fetchChildren = async (e: React.MouseEvent<Element>, note: Note) => {
 		e.preventDefault();
-		const children = await noteRepository.find({ parentId: note.id });
-		noteStore.set(children);
-		setExpanded((prev) => {
-			const newExpanded = new Map(prev);
-			newExpanded.set(note.id, !newExpanded.get(note.id));
-			return newExpanded;
-		});
+		try {
+			const children = await noteRepository.find({ parentId: note.id });
+			noteStore.set(children);
+			setExpanded((prev) => {
+				const newExpanded = new Map(prev);
+				newExpanded.set(note.id, !newExpanded.get(note.id));
+				return newExpanded;
+			});
+		} catch (error) {
+			console.error(error);
+			alert("子ノートの読み込みに失敗しました。");
+		}
 	};
 
 	const deleteNote = async (e:React.MouseEvent<Element>, noteId: number) => {
 		try {
 			e.preventDefault();
-			await noteRepository.delete(noteId);
+			await noteRepository.archive(noteId);
 			noteStore.delete(noteId);
 			navigate("/")
-		} catch(error) {
-			console.error("");
+		} catch (error) {
+			console.error(error);
+			alert("ゴミ箱への移動に失敗しました。");
 		}
-	}
+	};
 
 	const moveToDetail = (noteId: number) => {
 		navigate(`/notes/${noteId}`);
@@ -58,7 +69,11 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 	return (
 		<>
 			{notes
-				.filter((note) => (note.parentId ?? undefined) === (parentId ?? undefined))
+				.filter(
+					(note) =>
+						!note.isArchived &&
+						(note.parentId ?? undefined) === (parentId ?? undefined),
+				)
 				.map((note) => (
 					<div key={note.id}>
 						<NoteItem

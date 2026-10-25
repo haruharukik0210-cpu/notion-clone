@@ -58,7 +58,7 @@ export default function NoteItem({
 				>
 					<DropdownMenuItem onClick={onDelete}>
 						<FiTrash2 className="note-item-delete-icon" size={16} />
-						Delete
+						ゴミ箱へ
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>

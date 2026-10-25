@@ -1,7 +1,7 @@
 import Item from './Item';
 import NoteList from '../NoteList';
 import UserItem from './UserItem';
-import { FiPlus, FiSearch } from 'react-icons/fi';
+import { FiPlus, FiSearch, FiTrash2 } from 'react-icons/fi';
 import { useNoteStore } from '../../modules/notes/notes.state';
 import { noteRepository } from '../../modules/notes/note.repository';
 import { useNavigate } from 'react-router-dom';
@@ -11,9 +11,10 @@ import ThemeToggle from './ThemeToggle';
 
 interface Props {
   onSearchClick?: () => void;
+  onTrashClick?: () => void;
 }
 
-export default function SideBar({ onSearchClick }: Props) {
+export default function SideBar({ onSearchClick, onTrashClick }: Props) {
   const noteStore = useNoteStore(); 
   const navigate = useNavigate();
   const [theme, setTheme] = useAtom(themeAtom);
@@ -49,6 +50,7 @@ export default function SideBar({ onSearchClick }: Props) {
           <div className='sidebar-spacer'>
             <NoteList />
             <Item label='ノートを作成' icon={FiPlus} onClick={createNote} />
+            <Item label='ゴミ箱' icon={FiTrash2} onClick={onTrashClick} />
           </div>
         </div>
       </aside>

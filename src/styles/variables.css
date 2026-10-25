@@ -38,6 +38,7 @@
   --color-sidebar: var(--color-neutral-100);
   --color-sidebar-active: var(--color-neutral-200);
   --color-hover: var(--color-neutral-300);
+  --color-destructive: hsl(0, 72%, 51%);
 
   /* ブラウザ標準のUI（スクロールバー・フォーム部品）の配色 */
   color-scheme: light;
@@ -121,6 +122,7 @@
   --color-sidebar: hsl(0, 0%, 12.5%);
   --color-sidebar-active: hsl(0, 0%, 18%);
   --color-hover: hsl(0, 0%, 24%);
+  --color-destructive: hsl(0, 72%, 63%);
 
   color-scheme: dark;
 }
