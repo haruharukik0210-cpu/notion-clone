@@ -10,6 +10,7 @@ import {
 	FiFile,
 	FiMoreHorizontal,
 	FiPlus,
+	FiStar,
 	FiTrash2,
 } from "react-icons/fi";
 import Item from "../SideBar/Item";
@@ -25,6 +26,7 @@ interface Props {
 	expanded?: boolean;
 	onClick?: () => void;
 	onDelete: (event: React.MouseEvent<Element>) => void;
+	onFavorite: (event: React.MouseEvent<Element>) => void;
 }
 
 export default function NoteItem({
@@ -35,6 +37,7 @@ export default function NoteItem({
 	expanded = false,
 	onClick,
 	onDelete,
+	onFavorite,
 }: Props) {
 	const [isHovered, setIsHovered] = useState(false);
 
@@ -56,6 +59,13 @@ export default function NoteItem({
 					side="right"
 					forceMount
 				>
+					{/* お気に入りのときは出さない（外すのはノート詳細の星から） */}
+					{!note.isFavorite && (
+						<DropdownMenuItem onClick={onFavorite}>
+							<FiStar className="note-item-delete-icon" size={16} />
+							お気に入りに追加
+						</DropdownMenuItem>
+					)}
 					<DropdownMenuItem onClick={onDelete}>
 						<FiTrash2 className="note-item-delete-icon" size={16} />
 						ゴミ箱へ

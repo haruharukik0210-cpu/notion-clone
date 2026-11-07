@@ -27,7 +27,9 @@ export default function Layout() {
 		setIsLoading(true);
 		try {
 			const notes = await noteRepository.find();
+			const favoriteNotes = await noteRepository.findFavorites();
 			noteStore.set(notes);
+			noteStore.set(favoriteNotes);
 		} catch (error) {
 			console.error(error);
 			alert("ノートの読み込みに失敗しました。");
@@ -96,7 +98,6 @@ export default function Layout() {
 		}
 	};
 
-	// ノートの親 → 親の親…とさかのぼり、「旅行の計画 / 持ち物リスト」の形で返す
 	const getPath = (note: Note): string => {
 		// 親は「ゴミ箱の一覧」か「サイドバーのストア」のどちらかにいる
 		const allNotes = [...notes, ...noteStore.getAll()];

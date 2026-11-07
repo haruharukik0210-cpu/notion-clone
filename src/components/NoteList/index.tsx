@@ -50,15 +50,26 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 		}
 	};
 
-	const deleteNote = async (e:React.MouseEvent<Element>, noteId: number) => {
+	const deleteNote = async (e: React.MouseEvent<Element>, noteId: number) => {
 		try {
 			e.preventDefault();
 			await noteRepository.archive(noteId);
 			noteStore.delete(noteId);
-			navigate("/")
+			navigate("/");
 		} catch (error) {
 			console.error(error);
 			alert("ゴミ箱への移動に失敗しました。");
+		}
+	};
+
+	const favoriteNote = async (e: React.MouseEvent<Element>, noteId: number) => {
+		try {
+			e.preventDefault();
+			const favoriteNote = await noteRepository.favorite(noteId);
+			noteStore.set([favoriteNote]);
+		} catch (error) {
+			console.error(error);
+			alert("お気に入りの追加に失敗しました");
 		}
 	};
 
@@ -68,6 +79,7 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 
 	return (
 		<>
+			
 			{notes
 				.filter(
 					(note) =>
@@ -83,7 +95,8 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 							layer={layer}
 							expanded={expanded.get(note.id)}
 							onClick={() => moveToDetail(note.id)}
-							onDelete={(e) => deleteNote(e,note.id)}
+							onDelete={(e) => deleteNote(e, note.id)}
+							onFavorite={(e) => favoriteNote(e, note.id)}
 						/>
 						{expanded.get(note.id) && (
 							<NoteList layer={layer + 1} parentId={note.id} />

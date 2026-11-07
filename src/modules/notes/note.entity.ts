@@ -6,6 +6,7 @@ export class Note {
     parentId?: number | null;
     createdAt!: Date;
     isArchived!: boolean;
+    isFavorite!: boolean;
 
     constructor(data: Note) {
         Object.assign(this, data);

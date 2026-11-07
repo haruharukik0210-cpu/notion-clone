@@ -29,3 +29,12 @@
   --bn-colors-menu-background: var(--color-popover);
   --bn-colors-menu-text: var(--color-popover-foreground);
 }
+
+/* タイトルの上に並べるボタン（お気に入りの星など）を右寄せで置くエリア */
+.note-detail-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-1);
+  padding: 0 var(--spacing-3);
+  margin-bottom: var(--spacing-2);
+}

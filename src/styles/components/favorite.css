@@ -1,0 +1,44 @@
+/* Favorite Button Styles（ノート詳細の星） */
+.favorite-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-muted-foreground);
+  cursor: pointer;
+  transition: background-color var(--transition-fast) ease-in-out,
+              color var(--transition-fast) ease-in-out;
+}
+
+.favorite-button:hover {
+  background-color: var(--color-accent);
+  color: var(--color-foreground);
+}
+
+/* お気に入りのときは、黄色の塗りつぶしの星 */
+.favorite-button.is-active,
+.favorite-button.is-active:hover {
+  color: var(--color-favorite);
+}
+
+.favorite-button.is-active svg {
+  fill: currentColor;
+}
+
+/* Favorite List Styles（サイドバーのお気に入りゾーン） */
+.favorite-list {
+  margin-bottom: var(--spacing-4);
+}
+
+.favorite-list-heading {
+  margin: 0;
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: var(--font-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-muted-foreground);
+}

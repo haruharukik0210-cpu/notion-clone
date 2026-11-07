@@ -7,6 +7,7 @@ import { noteRepository } from "../modules/notes/note.repository";
 import { Editor } from "../components/editor";
 import { useDebouncedCallback } from "use-debounce";
 import ArchivedBanner from "../components/ArchivedBanner";
+import FavoriteButton from "../components/FavoriteButton";
 
 export default function NoteDetail() {
 	const params = useParams();
@@ -70,6 +71,20 @@ export default function NoteDetail() {
 		}
 	};
 
+	const toggleFavorite = async (noteId: number, isFavorite: boolean) => {
+		try {
+			const updatedNote = !isFavorite
+				? await noteRepository.favorite(noteId)
+				: await noteRepository.unfavorite(noteId);
+			noteStore.set([updatedNote]);
+		} catch (error) {
+			console.error(error);
+			!isFavorite
+				? alert("ノートのお気に入り登録に失敗しました。")
+				: alert("ノートのお気に入り解除に失敗しました。");
+		}
+	};
+
 	const debounced = useDebouncedCallback(updateNote, 500);
 
 	if (isLoading) return <div />;
@@ -85,6 +100,11 @@ export default function NoteDetail() {
 			)}
 			<div className="note-detail-container">
 				<div className="note-detail-content">
+					<div className="note-detail-actions">
+						{!note.isArchived && (
+							<FavoriteButton isFavorite={note.isFavorite} onToggle={() => toggleFavorite(note.id, note.isFavorite)} />
+						)}
+					</div>
 					<TitleInput
 						initialData={note}
 						onTitleChange={(title) => debounced(note.id, { title })}

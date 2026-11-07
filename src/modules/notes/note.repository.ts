@@ -14,6 +14,10 @@ export const noteRepository = {
 		});
 		return result.data.notes.map((data: Note) => new Note(data));
 	},
+	async findFavorites(): Promise<Note[]> {
+		const result = await api.get("/notes/favorites");
+		return result.data.notes.map((data: Note) => new Note(data));
+	},
 	async findTrash(): Promise<Note[]> {
 		const result = await api.get("/notes/trash");
 		return result.data.notes.map((data: Note) => new Note(data));
@@ -29,11 +33,19 @@ export const noteRepository = {
 		const result = await api.get(`/notes/${id}`);
 		return new Note(result.data);
 	},
-	async update( 
+	async update(
 		id: number,
 		note: { title?: string; content?: string },
 	): Promise<Note> {
 		const result = await api.patch(`/notes/${id}`, note);
+		return new Note(result.data);
+	},
+	async favorite(id: number): Promise<Note> {
+		const result = await api.patch(`/notes/${id}/favorite`);
+		return new Note(result.data);
+	},
+	async unfavorite(id: number): Promise<Note> {
+		const result = await api.patch(`/notes/${id}/unfavorite`);
 		return new Note(result.data);
 	},
 	async restore(id: number): Promise<Note> {
