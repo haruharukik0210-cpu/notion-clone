@@ -35,10 +35,7 @@
   margin-bottom: var(--spacing-4);
 }
 
-.favorite-list-heading {
-  margin: 0;
-  padding: var(--spacing-1) var(--spacing-3);
-  font-size: var(--font-xs);
-  font-weight: var(--font-medium);
-  color: var(--color-muted-foreground);
+/* NoteItem の外側の余白（layer 0 のとき 12px）と同じにする */
+.favorite-list-item {
+  padding-left: var(--spacing-3);
 }

@@ -25,6 +25,15 @@
   margin-top: var(--spacing-4);
 }
 
+/* サイドバーのグループの見出し（「お気に入り」「プライベート」） */
+.sidebar-section-heading {
+  margin: 0;
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: var(--font-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-muted-foreground);
+}
+
 .sidebar-placeholder {
   position: absolute;
   top: 0;
