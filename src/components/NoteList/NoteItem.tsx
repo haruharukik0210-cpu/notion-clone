@@ -97,7 +97,7 @@ export default function NoteItem({
 				onIconClick={(e) => {
 					// ▶ で子ノートを開くときは、詳細へ移動しない
 					e.stopPropagation();
-					onExpand?.(e);
+					onExpand?.();
 				}}
 			/>
 		</div>
