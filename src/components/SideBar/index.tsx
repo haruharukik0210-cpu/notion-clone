@@ -53,6 +53,7 @@ export default function SideBar({ onSearchClick, onTrashClick }: Props) {
 						{favoriteNotes.length > 0 && (
 							<FavoriteList notes={favoriteNotes} onItemSelect={moveToDetail} />
 						)}
+						<p className="sidebar-section-heading">プライベート</p>
 						<NoteList />
 						<Item label="ノートを作成" icon={FiPlus} onClick={createNote} />
 						<Item label="ゴミ箱" icon={FiTrash2} onClick={onTrashClick} />

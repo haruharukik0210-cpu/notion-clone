@@ -11,14 +11,16 @@ interface Props {
 export default function FavoriteList({ notes, onItemSelect }: Props) {
 	return (
 		<section className="favorite-list" aria-label="お気に入り">
-			<p className="favorite-list-heading">お気に入り</p>
+			<p className="sidebar-section-heading">お気に入り</p>
 			{notes.map((note) => (
-				<Item
-					key={note.id}
-					label={note.title || "無題"}
-					icon={FiFile}
-					onClick={() => onItemSelect(note.id)}
-				/>
+				// NoteItem と同じく外側に余白をつけて、通常のノートと左端をそろえる
+				<div key={note.id} className="favorite-list-item">
+					<Item
+						label={note.title || "無題"}
+						icon={FiFile}
+						onClick={() => onItemSelect(note.id)}
+					/>
+				</div>
 			))}
 		</section>
 	);
