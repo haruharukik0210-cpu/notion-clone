@@ -17,8 +17,7 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 
 	const navigate = useNavigate();
 
-	const createChild = async (e: React.MouseEvent<Element>, parentId: number) => {
-		e.preventDefault();
+	const createChild = async (parentId: number) => {
 		try {
 			const newNote = await noteRepository.create({ parentId });
 			noteStore.set([newNote]);
@@ -34,8 +33,7 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 		}
 	};
 
-	const fetchChildren = async (e: React.MouseEvent<Element>, note: Note) => {
-		e.preventDefault();
+	const fetchChildren = async (note: Note) => {
 		try {
 			const children = await noteRepository.find({ parentId: note.id });
 			noteStore.set(children);
@@ -50,9 +48,8 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 		}
 	};
 
-	const deleteNote = async (e: React.MouseEvent<Element>, noteId: number) => {
+	const deleteNote = async (noteId: number) => {
 		try {
-			e.preventDefault();
 			await noteRepository.archive(noteId);
 			noteStore.delete(noteId);
 			navigate("/");
@@ -62,9 +59,8 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 		}
 	};
 
-	const favoriteNote = async (e: React.MouseEvent<Element>, noteId: number) => {
+	const favoriteNote = async (noteId: number) => {
 		try {
-			e.preventDefault();
 			const favoriteNote = await noteRepository.favorite(noteId);
 			noteStore.set([favoriteNote]);
 		} catch (error) {
@@ -79,7 +75,6 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 
 	return (
 		<>
-			
 			{notes
 				.filter(
 					(note) =>
@@ -90,13 +85,13 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 					<div key={note.id}>
 						<NoteItem
 							note={note}
-							onCreate={(e) => createChild(e, note.id)}
-							onExpand={(e) => fetchChildren(e, note)}
+							onCreate={() => createChild(note.id)}
+							onExpand={() => fetchChildren(note)}
 							layer={layer}
 							expanded={expanded.get(note.id)}
 							onClick={() => moveToDetail(note.id)}
-							onDelete={(e) => deleteNote(e, note.id)}
-							onFavorite={(e) => favoriteNote(e, note.id)}
+							onDelete={() => deleteNote(note.id)}
+							onFavorite={() => favoriteNote(note.id)}
 						/>
 						{expanded.get(note.id) && (
 							<NoteList layer={layer + 1} parentId={note.id} />

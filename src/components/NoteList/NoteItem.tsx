@@ -20,13 +20,13 @@ import type { IconType } from "react-icons";
 
 interface Props {
 	note: Note;
-	onCreate?: (event: React.MouseEvent<Element>) => void;
-	onExpand?: (event: React.MouseEvent<Element>) => void;
+	onCreate?: () => void;
+	onExpand?: () => void;
 	layer?: number;
 	expanded?: boolean;
 	onClick?: () => void;
-	onDelete: (event: React.MouseEvent<Element>) => void;
-	onFavorite: (event: React.MouseEvent<Element>) => void;
+	onDelete: () => void;
+	onFavorite: () => void;
 }
 
 export default function NoteItem({
@@ -45,8 +45,12 @@ export default function NoteItem({
 		return expanded ? FiChevronDown : isHovered ? FiChevronRight : FiFile;
 	};
 
+	// メニュー（「…」・＋・ドロップダウンの項目）のクリックを、行の onClick（詳細へ移動）に伝えない
 	const menu = (
-		<div className="note-item-menu-container">
+		<div
+			className="note-item-menu-container"
+			onClick={(e) => e.stopPropagation()}
+		>
 			<DropdownMenu>
 				<DropdownMenuTrigger>
 					<div className="note-item-menu-button" role="button">
@@ -90,7 +94,11 @@ export default function NoteItem({
 				icon={getIcon()}
 				label={note.title ?? "無題"}
 				trailingItem={menu}
-				onIconClick={onExpand}
+				onIconClick={(e) => {
+					// ▶ で子ノートを開くときは、詳細へ移動しない
+					e.stopPropagation();
+					onExpand?.(e);
+				}}
 			/>
 		</div>
 	);
