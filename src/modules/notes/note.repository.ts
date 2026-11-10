@@ -35,7 +35,7 @@ export const noteRepository = {
 	},
 	async update(
 		id: number,
-		note: { title?: string; content?: string },
+		note: { title?: string; content?: string; icon?: string | null; },
 	): Promise<Note> {
 		const result = await api.patch(`/notes/${id}`, note);
 		return new Note(result.data);

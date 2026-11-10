@@ -11,10 +11,9 @@ interface Props {
 	readOnly?: boolean;
 }
 
-
 export function Editor({ initialContent, onChange, readOnly = false }: Props) {
 	const theme = useAtomValue(themeAtom);
-	
+
 	const editor = useCreateBlockNote({
 		dictionary: ja,
 		initialContent: initialContent ? JSON.parse(initialContent) : undefined,
