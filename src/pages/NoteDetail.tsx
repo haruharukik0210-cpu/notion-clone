@@ -8,11 +8,14 @@ import { Editor } from "../components/editor";
 import { useDebouncedCallback } from "use-debounce";
 import ArchivedBanner from "../components/ArchivedBanner";
 import FavoriteButton from "../components/FavoriteButton";
+import NoteIconHeader from "../components/NoteIconHeader";
+import IconPicker from "../components/IconPicker";
 
 export default function NoteDetail() {
 	const params = useParams();
 	const id = parseInt(params.id!);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 	const noteStore = useNoteStore();
 	const note = noteStore.getOne(id);
 	const navigate = useNavigate();
@@ -85,11 +88,23 @@ export default function NoteDetail() {
 		}
 	};
 
+	const updateIcon = async (noteId: number, icon: string | null) => {
+		try {
+			const updatedNote = await noteRepository.update(noteId, { icon });
+			noteStore.set([updatedNote]);
+			setIsOpen(false);
+		} catch (error) {
+			console.error(error);
+			alert("ノートのアイコン更新に失敗しました。");
+		}
+	}
+
 	const debounced = useDebouncedCallback(updateNote, 500);
 
 	if (isLoading) return <div />;
 	if (!note) return <div>note is not existed</div>;
 
+	
 	return (
 		<>
 			{note.isArchived && (
@@ -100,16 +115,24 @@ export default function NoteDetail() {
 			)}
 			<div className="note-detail-container">
 				<div className="note-detail-content">
-					<div className="note-detail-actions">
-						{!note.isArchived && (
-							<FavoriteButton isFavorite={note.isFavorite} onToggle={() => toggleFavorite(note.id, note.isFavorite)} />
-						)}
+					{/* タイトルのまわり：ここにマウスを乗せると「アイコンを追加」が出る */}
+					<div className="note-detail-header">
+						<div className="note-detail-actions">
+							{!note.isArchived && (
+								<FavoriteButton isFavorite={note.isFavorite} onToggle={() => toggleFavorite(note.id, note.isFavorite)} />
+							)}
+						</div>
+						{/* アイコンのエリア：NoteIconHeader と IconPicker を並べて置く（IconPicker はアイコンの下に開く） */}
+						<div className="note-icon-area">
+							<NoteIconHeader icon={note.icon} readOnly={note.isArchived} onOpen={() => setIsOpen(true)} />
+							<IconPicker icon={note.icon} isOpen={isOpen} onUpdate={(emojiData) => updateIcon(note.id, emojiData.emoji)} onClose={() => setIsOpen(false)} />
+						</div>
+						<TitleInput
+							initialData={note}
+							onTitleChange={(title) => debounced(note.id, { title })}
+							readOnly={note.isArchived}
+						/>
 					</div>
-					<TitleInput
-						initialData={note}
-						onTitleChange={(title) => debounced(note.id, { title })}
-						readOnly={note.isArchived}
-					/>
 					<Editor
 						initialContent={note.content}
 						onChange={(content) => debounced(note.id, { content })}

@@ -9,6 +9,7 @@ import {
 	CommandItem,
 	CommandList,
 } from "./ui/command";
+import NoteIcon from "./NoteIcon";
 
 interface Props {
 	isOpen: boolean;
@@ -39,6 +40,7 @@ export default function SearchModal({
 								title={note.title ?? "無題"}
 								onSelect={() => onItemSelect(note.id)}
 							>
+								<NoteIcon icon={note.icon} />
 								<span>{note.title}</span>
 							</CommandItem>
 						))}

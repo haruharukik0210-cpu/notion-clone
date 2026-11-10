@@ -7,6 +7,7 @@ export class Note {
     createdAt!: Date;
     isArchived!: boolean;
     isFavorite!: boolean;
+    icon!: string | null;
 
     constructor(data: Note) {
         Object.assign(this, data);

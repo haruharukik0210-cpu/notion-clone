@@ -1,4 +1,4 @@
-import { FiFile, FiRotateCcw, FiTrash2 } from "react-icons/fi";
+import { FiRotateCcw, FiTrash2 } from "react-icons/fi";
 import type { Note } from "../modules/notes/note.entity";
 import {
 	Dialog,
@@ -7,6 +7,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "./ui/dialog";
+import NoteIcon from "./NoteIcon";
 
 // ゴミ箱モーダル（見た目だけを担当。データと処理は親から受け取る）
 interface Props {
@@ -50,7 +51,7 @@ export default function TrashModal({
 										className="trash-modal-item-title"
 										onClick={() => onItemSelect(note.id)}
 									>
-										<FiFile size={18} />
+										<NoteIcon icon={note.icon} />
 										<span className="trash-modal-item-text">
 											<span className="trash-modal-item-name">{note.title || "無題"}</span>
 											{path && <span className="trash-modal-item-path">{path}</span>}

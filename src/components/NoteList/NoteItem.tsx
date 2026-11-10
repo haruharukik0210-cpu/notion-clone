@@ -7,7 +7,6 @@ import {
 import {
 	FiChevronDown,
 	FiChevronRight,
-	FiFile,
 	FiMoreHorizontal,
 	FiPlus,
 	FiStar,
@@ -16,7 +15,7 @@ import {
 import Item from "../SideBar/Item";
 import { Note } from "./../../modules/notes/note.entity";
 import { useState } from "react";
-import type { IconType } from "react-icons";
+import NoteIcon from "../NoteIcon";
 
 interface Props {
 	note: Note;
@@ -41,8 +40,11 @@ export default function NoteItem({
 }: Props) {
 	const [isHovered, setIsHovered] = useState(false);
 
-	const getIcon = (): IconType => {
-		return expanded ? FiChevronDown : isHovered ? FiChevronRight : FiFile;
+	// 左端に出すもの：開いている → ▼、マウスが乗っている → ▶、それ以外 → ノートのアイコン（絵文字か 📄）
+	const getLeadingItem = () => {
+		if (expanded) return <FiChevronDown size={18} />;
+		if (isHovered) return <FiChevronRight size={18} />;
+		return <NoteIcon icon={note.icon} />;
 	};
 
 	// メニュー（「…」・＋・ドロップダウンの項目）のクリックを、行の onClick（詳細へ移動）に伝えない
@@ -91,7 +93,7 @@ export default function NoteItem({
 			onClick={onClick}
 		>
 			<Item
-				icon={getIcon()}
+				leadingItem={getLeadingItem()}
 				label={note.title ?? "無題"}
 				trailingItem={menu}
 				onIconClick={(e) => {
