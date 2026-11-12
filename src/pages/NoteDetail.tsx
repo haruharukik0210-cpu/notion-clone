@@ -17,25 +17,27 @@ export default function NoteDetail() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const noteStore = useNoteStore();
+	// set だけを取り出す（noteStore 自体は毎回新しくなるが、set は useCallback で変わらない）
+	const { set: setNoteStore } = noteStore;
 	const note = noteStore.getOne(id);
 	const navigate = useNavigate();
 
-	const fetchOne = async () => {
-		setIsLoading(true);
-		try {
-			const note = await noteRepository.findOne(id);
-			noteStore.set([note]);
-		} catch (error) {
-			// 見つからない場合などは、下の「note is not existed」が表示される
-			console.error(error);
-		} finally {
-			setIsLoading(false);
-		}
-	};
-
+	
 	useEffect(() => {
+		const fetchOne = async () => {
+			setIsLoading(true);
+			try {
+				const note = await noteRepository.findOne(id);
+				setNoteStore([note]);
+			} catch (error) {
+				// 見つからない場合などは、下の「note is not existed」が表示される
+				console.error(error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
 		fetchOne();
-	}, [id]);
+	}, [id, setNoteStore]);
 
 	const updateNote = async (
 		id: number,
@@ -82,9 +84,10 @@ export default function NoteDetail() {
 			noteStore.set([updatedNote]);
 		} catch (error) {
 			console.error(error);
-			!isFavorite
-				? alert("ノートのお気に入り登録に失敗しました。")
-				: alert("ノートのお気に入り解除に失敗しました。");
+			alert(!isFavorite
+				? "ノートのお気に入り登録に失敗しました。"
+				: "ノートのお気に入り解除に失敗しました。"
+			);
 		}
 	};
 

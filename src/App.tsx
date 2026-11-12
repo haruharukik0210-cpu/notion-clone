@@ -16,24 +16,24 @@ function App() {
 	const theme = useAtomValue(themeAtom);
 
 	useEffect(() => {
-		fetchCurrentUser();
-	}, []);
-
-	useEffect(() => {
 		document.documentElement.setAttribute("data-theme", theme);
 		localStorage.setItem("theme", theme);
 	}, [theme]);
 
-	const fetchCurrentUser = async () => {
-		try {
-			const user = await authRepository.getCurrentUser();
-			setCurrentUser(user);
-		} catch (error) {
-			console.error(error);
-		} finally {
-			setIsLoading(false);
-		}
-	};
+	
+	useEffect(() => {
+		const fetchCurrentUser = async () => {
+			try {
+				const user = await authRepository.getCurrentUser();
+				setCurrentUser(user);
+			} catch (error) {
+				console.error(error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+		fetchCurrentUser();
+	}, [setCurrentUser]);
 
 	if (isLoading) return <div />;
 
