@@ -14,30 +14,34 @@ export default function Layout() {
 	const currentUser = useAtomValue(currentUserAtom);
 	const [isLoading, setIsLoading] = useState(true);
 	const noteStore = useNoteStore();
+	// set だけを取り出す（noteStore 自体は毎回新しくなるが、set は useCallback で変わらない）
+	const { set: setNoteStore } = noteStore;
 	const [isShowModal, setIsShowModal] = useState(false);
 	const [searchResult, setSearchResult] = useState<Note[]>([]);
 	const [isOpen, setIsOpen] = useState(false);
 	const [notes, setNotes] = useState<Note[]>([]);
 	const navigate = useNavigate();
 
+	
+	
 	useEffect(() => {
+		const fetchNotes = async () => {
+			setIsLoading(true);
+			try {
+				const notes = await noteRepository.find();
+				const favoriteNotes = await noteRepository.findFavorites();
+				setNoteStore(notes);
+				setNoteStore(favoriteNotes);
+			} catch (error) {
+				console.error(error);
+				alert("ノートの読み込みに失敗しました。");
+			} finally {
+				// 成功しても失敗しても、読み込み中の表示は終わらせる
+				setIsLoading(false);
+			}
+		};
 		fetchNotes();
-	}, []);
-	const fetchNotes = async () => {
-		setIsLoading(true);
-		try {
-			const notes = await noteRepository.find();
-			const favoriteNotes = await noteRepository.findFavorites();
-			noteStore.set(notes);
-			noteStore.set(favoriteNotes);
-		} catch (error) {
-			console.error(error);
-			alert("ノートの読み込みに失敗しました。");
-		} finally {
-			// 成功しても失敗しても、読み込み中の表示は終わらせる
-			setIsLoading(false);
-		}
-	};
+	}, [setNoteStore]);
 
 	const searchNotes = async (keyword: string) => {
 		try {

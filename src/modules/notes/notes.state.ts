@@ -1,6 +1,7 @@
 import { atom } from "jotai";
 import type { Note } from "./note.entity";
 import { useAtom } from "jotai";
+import { useCallback } from "react";
 
 const noteAtom = atom<Note[]>([]);
 
@@ -10,16 +11,20 @@ export const useNoteStore = () => {
 	const getOne = (id: number) => {
 		return notes.find((note) => note.id === id);
 	}
-	const set = (newNotes: Note[]) => {
-		setNotes((oldNotes) => {
-			const combineNotes = [...oldNotes, ...newNotes];
-			const uniqueNotes: { [key: number]: Note } = {};
-			for (const note of combineNotes) {
-				uniqueNotes[note.id] = note;
-			}
-			return Object.values(uniqueNotes);
-		});
-	};
+	
+	const set = useCallback(
+		(newNotes: Note[]) => {
+			setNotes((oldNotes) => {
+				const combineNotes = [...oldNotes, ...newNotes];
+				const uniqueNotes: { [key: number]: Note } = {};
+				for (const note of combineNotes) {
+					uniqueNotes[note.id] = note;
+				}
+				return Object.values(uniqueNotes);
+			});
+		},
+		[setNotes],
+	);
 
 	const deleteNote = (id: number) => {
 		const findChildrenIds = (parentId: number): number[] => {
