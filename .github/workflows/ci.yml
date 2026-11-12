@@ -1,0 +1,34 @@
+# CI（GitHub Actions）の設定ファイル
+# PR を作ったとき・master にプッシュしたときに、GitHub のサーバーで自動チェックする
+
+name: CI
+
+# いつ動かすか
+on:
+  pull_request: # PR を作ったとき・PR のブランチにプッシュしたとき
+  push:
+    branches: [master] # master が更新されたとき（PR のマージを含む）
+
+jobs:
+  check:
+    name: Lint & Build
+    runs-on: ubuntu-latest # GitHub が用意する Linux のパソコンで動かす
+
+    steps:
+      # 1. リポジトリのコードを取ってくる
+      - uses: actions/checkout@v5
+
+      # 2. Node.js を入れる（バージョンは .nvmrc に合わせる）
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm # ダウンロードしたライブラリを保存して、2回目以降を速くする
+
+      # 3. package-lock.json どおりにライブラリを入れる
+      - run: npm ci
+
+      # 4. Lint（エラーが1件でもあると失敗）
+      - run: npm run lint
+
+      # 5. 型チェック＋ビルド（型エラーがあると失敗）
+      - run: npm run build
