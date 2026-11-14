@@ -32,3 +32,6 @@ jobs:
 
       # 5. 型チェック＋ビルド（型エラーがあると失敗）
       - run: npm run build
+
+      # 6. ユニットテスト（Vitest。1つでも失敗すると失敗）
+      - run: npm test
