@@ -8,3 +8,12 @@ export const mergeNotes = (oldNotes: Note[], newNotes: Note[]): Note[] => {
 	}
 	return Object.values(uniqueNotes);
 };
+
+export const findChildrenIds = (notes: Note[], parentId: number): number[] => {
+	const childrenIds = notes
+		.filter((note) => note.parentId === parentId)
+		.map((note) => note.id);
+	return childrenIds.concat(
+		...childrenIds.map((childId) => findChildrenIds(notes, childId)),
+	);
+};
