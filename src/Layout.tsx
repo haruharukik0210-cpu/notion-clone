@@ -7,6 +7,7 @@ import { currentUserAtom } from "./modules/auth/current-user.state";
 import { useEffect, useState } from "react";
 import { useNoteStore } from "./modules/notes/notes.state";
 import { noteRepository } from "./modules/notes/note.repository";
+import { getNotePath } from "./modules/notes/notes.utils";
 import type { Note } from "./modules/notes/note.entity";
 import TrashModal from "./components/TrashModal";
 
@@ -103,20 +104,9 @@ export default function Layout() {
 	};
 
 	const getPath = (note: Note): string => {
-		// 親は「ゴミ箱の一覧」か「サイドバーのストア」のどちらかにいる
+		// 親は「ゴミ箱の一覧」か「サイドバーのストア」のどちらかにいるので、まとめてから渡す
 		const allNotes = [...notes, ...noteStore.getAll()];
-		let current = note;
-		const titles: string[] = [];
-
-		// 親がいる間、繰り返す
-		while (current.parentId != null) {
-			const parent = allNotes.find((n) => n.id === current.parentId);
-			if (!parent) break; // 親が読み込まれていなければ、そこで終わり
-			titles.unshift(parent.title || "無題"); // 先頭に追加 → 上の階層が先頭に来る
-			current = parent; // 次は親の親を探す
-		}
-
-		return titles.join(" / ");
+		return getNotePath(allNotes, note);
 	};
 
 	if (!currentUser) return <Navigate to="/signin" replace />;

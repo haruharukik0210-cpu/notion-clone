@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { mergeNotes, findChildrenIds } from "./notes.utils";
+import { findChildrenIds, getNotePath, mergeNotes } from "./notes.utils";
 import type { Note } from "./note.entity";
 
 const createNote = (id: number, title: string, parentId: number | null = null): Note => ({
@@ -44,5 +44,38 @@ describe("findChildrenIds", () => {
 	});
 	it("関係ないノートが混ざっているとき", () => {
 		expect(findChildrenIds([createNote(1, "Note 1"), createNote(2, "Note 2")], 1)).toEqual([]);
+	});
+});
+
+describe("getNotePath", () => {
+	it("親がいないときは、空の文字列", () => {
+		const note = createNote(1, "Note 1");
+		expect(getNotePath([note], note)).toBe("");
+	});
+
+	it("親が1つなら、親のタイトルだけ", () => {
+		const parent = createNote(1, "親");
+		const note = createNote(2, "子", 1);
+		expect(getNotePath([parent, note], note)).toBe("親");
+	});
+
+	it("祖父・親の順に「 / 」でつながる", () => {
+		const grandparent = createNote(1, "祖父");
+		const parent = createNote(2, "親", 1);
+		const note = createNote(3, "子", 2);
+		expect(getNotePath([grandparent, parent, note], note)).toBe("祖父 / 親");
+	});
+
+	it("親が一覧にいなければ、そこで止まる", () => {
+		// 祖父（id:1）が一覧にいない
+		const parent = createNote(2, "親", 1);
+		const note = createNote(3, "子", 2);
+		expect(getNotePath([parent, note], note)).toBe("親");
+	});
+
+	it("タイトルがない親は「無題」になる", () => {
+		const parent = createNote(1, "");
+		const note = createNote(2, "子", 1);
+		expect(getNotePath([parent, note], note)).toBe("無題");
 	});
 });
