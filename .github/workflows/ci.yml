@@ -35,3 +35,35 @@ jobs:
 
       # 6. ユニットテスト（Vitest。1つでも失敗すると失敗）
       - run: npm test
+
+  # E2E テスト（Playwright）。Lint & Build とは別の job として、同時に動かす
+  e2e:
+    name: E2E
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # テストで使うブラウザ（Chromium）と、Linux で動かすのに必要な部品を入れる
+      - run: npx playwright install --with-deps chromium
+
+      # アプリを起動して、ニセモノの API でテストする（本物の API にはつながない）
+      - run: npm run test:e2e
+
+      # 失敗したときだけ、レポート（スクリーンショットや操作の記録）を保存する
+      # GitHub の Actions の画面からダウンロードして見られる
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
