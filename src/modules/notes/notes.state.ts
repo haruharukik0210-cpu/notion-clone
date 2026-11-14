@@ -2,6 +2,7 @@ import { atom } from "jotai";
 import type { Note } from "./note.entity";
 import { useAtom } from "jotai";
 import { useCallback } from "react";
+import { mergeNotes } from "./notes.utils";
 
 const noteAtom = atom<Note[]>([]);
 
@@ -15,12 +16,7 @@ export const useNoteStore = () => {
 	const set = useCallback(
 		(newNotes: Note[]) => {
 			setNotes((oldNotes) => {
-				const combineNotes = [...oldNotes, ...newNotes];
-				const uniqueNotes: { [key: number]: Note } = {};
-				for (const note of combineNotes) {
-					uniqueNotes[note.id] = note;
-				}
-				return Object.values(uniqueNotes);
+				return mergeNotes(oldNotes, newNotes);
 			});
 		},
 		[setNotes],
