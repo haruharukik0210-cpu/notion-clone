@@ -8,6 +8,7 @@ export class Note {
     isArchived!: boolean;
     isFavorite!: boolean;
     icon!: string | null;
+    position!: number;
 
     constructor(data: Note) {
         Object.assign(this, data);

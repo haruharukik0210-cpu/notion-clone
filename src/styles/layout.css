@@ -226,3 +226,44 @@
 .app-container {
   height: 100%;
 }
+
+/* Drag and Drop（並び替え） */
+.note-item-row {
+  position: relative;
+}
+
+/* 左端のつまみ（⋮⋮）：ふだんは隠して、行にマウスが乗ったら出す */
+.note-drag-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0.75rem; /* 12px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted-foreground);
+  cursor: grab;
+  opacity: 0;
+  touch-action: none; /* スマホで、つまみを触ったときに画面がスクロールしないように */
+  transition: opacity var(--transition-base) ease-in-out;
+}
+
+.note-item-row:hover .note-drag-handle,
+.note-drag-handle:focus-visible,
+.note-drag-handle.is-dragging {
+  opacity: 1;
+}
+
+.note-drag-handle.is-dragging {
+  cursor: grabbing;
+}
+
+/* 動かしている行（子ノートも含めた箱）：ほかの行より手前に出して、少し浮かせる */
+.sortable-note.is-dragging {
+  position: relative;
+  z-index: 1;
+  background-color: var(--color-sidebar);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.12);
+  border-radius: var(--radius-sm);
+  opacity: 0.9;
+}
