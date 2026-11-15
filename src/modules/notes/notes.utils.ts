@@ -26,10 +26,31 @@ export const getNotePath = (notes: Note[], note: Note): string => {
 
 	while (current.parentId != null) {
 		const parent = notes.find((n) => n.id === current.parentId);
-		if (!parent) break; 
-		titles.unshift(parent.title || "無題"); 
-		current = parent; 
+		if (!parent) break;
+		titles.unshift(parent.title || "無題");
+		current = parent;
 	}
 
 	return titles.join(" / ");
+};
+
+// 同じ親の中のノート一覧（position の順に並んだもの）と、
+// 動かしたノートの id（active）、落とした先のノートの id（over）を受け取って、
+// 並び替えたあとの一覧を返す
+export const reorderNotes = (
+	notes: Note[],
+	activeId: number,
+	overId: number,
+): Note[] => {
+	const activeIndex = notes.findIndex((note) => note.id === activeId);
+	const overIndex = notes.findIndex((note) => note.id === overId);
+	if (activeIndex === -1 || overIndex === -1) {
+		return notes; // どちらかのノートが見つからなければ、元の配列を返す
+	}
+
+	const updatedNotes = [...notes];
+	const movedNote = updatedNotes.splice(activeIndex, 1)[0];
+	updatedNotes.splice(overIndex, 0, movedNote);
+	// 並び替えた順に、position を 0, 1, 2 … と振り直す（元のノートは書き換えない）
+	return updatedNotes.map((note, index) => ({ ...note, position: index }));
 };
