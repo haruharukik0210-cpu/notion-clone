@@ -386,10 +386,81 @@ onDragEnd(event) {
 
 ### Step 3：ドラッグできるようにする（見た目は AI／処理はあなた）
 
-1. AI が `@dnd-kit/core` と `@dnd-kit/sortable` を入れて、つまみ（⋮⋮）とすき間ができる見た目を作る（まだ離しても何も起きない状態）
-2. あなたが「離したときの処理」を書く（上の ③〜⑥ の流れ）
+1. AI が `@dnd-kit/core` と `@dnd-kit/sortable` を入れて、つまみ（⋮⋮）とすき間ができる見た目を作る（まだ離しても何も起きない状態）✅
+2. あなたが「離したときの処理」を書く（上の ③〜⑥ の流れ。「同じ親か」の確認は、階層ごとに DndContext を分けたのでいらなくなった）
 3. あなたが「表示のときに `position` で並べる」を書く
 4. `e2e/mock-api.ts` も `position` と `PATCH /notes/reorder` に対応させる（既存の E2E を壊さないため）
+
+### Step 3 で AI がやったこと（見た目）
+
+| ファイル | 変更 |
+| --- | --- |
+| `package.json` | `@dnd-kit/core` 6.3.1・`@dnd-kit/sortable` 10.0.0・`@dnd-kit/utilities` 3.2.2 を追加 |
+| `src/components/NoteList/SortableNoteItem.tsx` | **新規**。ノートの行を「つかんで並び替えられる箱」にする |
+| `src/components/NoteList/NoteItem.tsx` | つまみ（`dragHandle`）を受け取って、行の左端に出す |
+| `src/components/NoteList/index.tsx` | 階層ごとに `DndContext` と `SortableContext` で囲む。離したときの処理は**仮**（console に出すだけ） |
+| `src/styles/layout.css` | つまみと、動かしている行の見た目 |
+
+#### 部品の関係
+
+```
+NoteList（1つの階層）
+└ DndContext            … ドラッグの「会場」。離したときに onDragEnd を呼ぶ
+  └ SortableContext     … 並び替える id の一覧（items）を知っている
+    └ SortableNoteItem  … useSortable で「動かせる箱」になる
+      ├ NoteItem        … 今までの行。左端につまみ（⋮⋮）
+      └ NoteList        … 開いているときの子ノート（箱の中なので、一緒に動く）
+```
+
+| 部品 | 役目 | たとえ |
+| --- | --- | --- |
+| `DndContext` | ドラッグ全体を見張る。離したら `onDragEnd(event)` を呼ぶ | jQuery の `$(document).on("drop", …)` の「見張り役」 |
+| `SortableContext` | `items={[1, 2, 3]}` の順番で並んでいる、と知っている | 並び替えるリストの `<ul>` |
+| `useSortable({ id })` | 行に id を登録して、ずらす量（`transform`）を教えてくれる | `<li data-id="3">` |
+| `setNodeRef` | 「動く箱」はこの要素 | |
+| `setActivatorNodeRef` + `listeners` | 「つかめる場所」はこの要素（つまみ） | |
+| `sensors` | どう操作したらドラッグが始まるか | |
+
+#### 決めたこと
+
+| 決めたこと | 理由 |
+| --- | --- |
+| **階層ごとに `DndContext` を分けた** | 子ノートの一覧の中で動かしたとき、親の階層の行に落とせない。**同じ親の中だけ**で並び替わる（範囲 A）。「同じ親か」のチェックを自分で書かなくてよくなった |
+| つまみだけでドラッグ（`setActivatorNodeRef`） | 行のほかの場所はクリックで詳細へ（観察の 1・8） |
+| 5px 動かしたらドラッグ開始（`distance: 5`） | つまみをちょっと触っただけでは始まらない |
+| つまみのクリックは `stopPropagation` | つまみを押しても詳細へ移動しない |
+| キーボードでも動かせる（`KeyboardSensor`） | つまみに Tab でフォーカス → Space → ↑↓ → Space。マウスが使えない人のため（アクセシビリティ） |
+| 縦だけ動かす（`x: 0`） | サイドバーで横にずれると見づらい |
+
+#### 確かめたこと
+
+| 確認 | 結果 |
+| --- | --- |
+| 行にマウスを乗せる | 左端につまみ（⋮⋮）が出る ✅ |
+| つまみで「旅行の計画」を一番上へ | ほかの行がずれて、すき間ができる ✅ |
+| 離す | console に `active: 3 over: 1` ✅（並び順はまだ戻る＝正しい） |
+| つまみをクリック | 詳細へ移動しない ✅ |
+| `npm run lint`・`tsc`・`npm test`（19件）・E2E（2件） | 通る ✅ |
+
+まだ試していないこと：子ノートの中での並び替え、開いている親を動かしたときに子がついてくるか。`npm run dev` で触って確かめてください。
+
+### Step 3 であなたが書くこと
+
+`NoteList/index.tsx` の `handleDragEnd` の中身です。今は console に出しているだけです。
+
+| # | やること | ヒント |
+| --- | --- | --- |
+| 1 | `over` がない・`active` と `over` が同じ → 何もしない | `event.over` は、どこにも落とさなかったら `null` |
+| 2 | 今の並び（`visibleNotes`）を覚えておく | 失敗したときに戻すため（#7 のテストが効いてくる） |
+| 3 | `reorderNotes` で新しい並びを作る | `event.active.id` の型は `number \| string`。`Number(...)` で数字にする |
+| 4 | すぐに store を更新する（楽観的更新） | `noteStore.set(...)` |
+| 5 | API に新しい id の順番を送る | `noteRepository` に `reorder(ids)` を足す（`PATCH /notes/reorder`、body は `{ ids }`） |
+| 6 | 失敗したら、2 で覚えた並びで store を戻して `alert` | ほかの関数と同じ `try / catch` の形 |
+| 7 | 表示するときに `position` で並べる | `visibleNotes` を作るところで `sort`。今は `mergeNotes` のせいで id 順になっている |
+
+7 を書かないと、4 で store を更新しても画面の並びが変わりません。**7 を先に書く**と、確かめやすいです。
+
+**注意**：`sort` も `splice` と同じで、**元の配列を書き換える**メソッドです。`filter` のあとなら新しい配列なので大丈夫ですが、理由も考えてみてください。
 
 ### Step 4：仕上げ
 

@@ -26,6 +26,8 @@ interface Props {
 	onClick?: () => void;
 	onDelete: () => void;
 	onFavorite: () => void;
+	// 左端のつまみ（⋮⋮）。SortableNoteItem から渡される
+	dragHandle?: React.ReactElement;
 }
 
 export default function NoteItem({
@@ -37,6 +39,7 @@ export default function NoteItem({
 	onClick,
 	onDelete,
 	onFavorite,
+	dragHandle,
 }: Props) {
 	const [isHovered, setIsHovered] = useState(false);
 
@@ -87,11 +90,13 @@ export default function NoteItem({
 	return (
 		<div
 			role="button"
+			className="note-item-row"
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			style={{ paddingLeft: `${layer * 12 + 12}px` }}
 			onClick={onClick}
 		>
+			{dragHandle}
 			<Item
 				leadingItem={getLeadingItem()}
 				label={note.title ?? "無題"}
