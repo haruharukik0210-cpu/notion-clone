@@ -56,6 +56,10 @@ export const noteRepository = {
 		await api.patch(`/notes/${id}/archive`);
 		return true;
 	},
+	async reorder(ids: number[]): Promise<Note[]> {
+		const result = await api.patch("/notes/reorder", { ids });
+		return result.data.notes.map((data: Note) => new Note(data));
+	},
 	async delete(id: number): Promise<boolean> {
 		await api.delete(`/notes/${id}`);
 		return true;

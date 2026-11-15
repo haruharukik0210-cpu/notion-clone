@@ -4,7 +4,7 @@ import { createMockNote, mockApi } from "./mock-api";
 test("ログインすると、サイドバーに自分のノートが表示される", async ({ page }) => {
 	// 準備：ニセモノの API に、ノートを2つ持たせておく
 	await mockApi(page, {
-		notes: [createMockNote(1, "買い物メモ"), createMockNote(2, "読書記録")],
+		notes: [createMockNote(1, "買い物メモ", null, 0), createMockNote(2, "読書記録", null, 1)],
 	});
 
 	// 1. ログイン画面を開く

@@ -4,6 +4,7 @@ import { noteRepository } from "../../modules/notes/note.repository";
 import { useNoteStore } from "../../modules/notes/notes.state";
 import SortableNoteItem from "./SortableNoteItem";
 import { useNavigate } from "react-router-dom";
+import { reorderNotes } from "../../modules/notes/notes.utils";
 import {
 	DndContext,
 	KeyboardSensor,
@@ -95,16 +96,28 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 	};
 
 	// この階層に表示するノート（ゴミ箱に入っていない・親が parentId のもの）
-	const visibleNotes = notes.filter(
-		(note) =>
-			!note.isArchived &&
-			(note.parentId ?? undefined) === (parentId ?? undefined),
-	);
+	const visibleNotes = notes
+		.filter(
+			(note) =>
+				!note.isArchived &&
+				(note.parentId ?? undefined) === (parentId ?? undefined),
+		)
+		.sort((a, b) => a.position - b.position);
 
 	// TODO（あなたが書く）：離したときの処理
 	// 今は「何を、どこに落としたか」を console に出すだけ
-	const handleDragEnd = (event: DragEndEvent) => {
-		console.log("active:", event.active.id, "over:", event.over?.id);
+	const handleDragEnd = async (event: DragEndEvent) => {
+		const preOrderedNotes = [...visibleNotes];
+		try {
+			const newOrderedNotes = reorderNotes(preOrderedNotes, Number(event.active.id), Number(event.over?.id));
+			if(!Number(event.over?.id)) return;
+			noteStore.set(newOrderedNotes);
+			await noteRepository.reorder(newOrderedNotes.map(note => note.id));
+		} catch (error) {
+			noteStore.set(preOrderedNotes);
+			console.error(error);
+			alert("ノートの並び替えに失敗しました。");
+		}
 	};
 
 	// 階層ごとに DndContext を分けているので、ドラッグできるのは同じ階層（同じ親）の中だけになる
