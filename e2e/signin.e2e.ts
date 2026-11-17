@@ -23,4 +23,7 @@ test("ログインすると、サイドバーに自分のノートが表示さ�
 
 	// 5. ログイン画面からトップページ（/）に移動しているのを確かめる
 	await expect(page).toHaveURL("/");
+
+	// 6. 登録したユーザーなので、ゲストのお知らせは出ない
+	await expect(page.getByText("ゲストとして利用中です。")).not.toBeVisible();
 });

@@ -7,6 +7,9 @@ import { noteRepository } from "../../modules/notes/note.repository";
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { themeAtom } from "../../modules/theme/theme.state";
+import GuestBanner from "../GuestBanner";
+import { useAtomValue } from "jotai";
+import { currentUserAtom } from "../../modules/auth/current-user.state";
 import ThemeToggle from "./ThemeToggle";
 import FavoriteList from "../FavoriteList";
 
@@ -17,6 +20,7 @@ interface Props {
 
 export default function SideBar({ onSearchClick, onTrashClick }: Props) {
 	const noteStore = useNoteStore();
+	const currentUser = useAtomValue(currentUserAtom);
 	const favoriteNotes = noteStore.getAll().filter((note) => note.isFavorite);
 	const navigate = useNavigate();
 	const [theme, setTheme] = useAtom(themeAtom);
@@ -44,6 +48,7 @@ export default function SideBar({ onSearchClick, onTrashClick }: Props) {
 		<>
 			<aside className="sidebar">
 				<div>
+					{currentUser?.isGuest && <GuestBanner />}
 					<div>
 						<UserItem />
 						<Item label="検索" icon={FiSearch} onClick={onSearchClick} />

@@ -31,4 +31,9 @@ export const authRepository = {
 		if (!result.data) return undefined;
 		return new User(result.data);
 	},
+	async guest(): Promise<{ user: User; token: string }> {
+		const result = await api.post("auth/guest");
+		const { user, token } = result.data;
+		return { user: new User(user), token };
+	},
 };

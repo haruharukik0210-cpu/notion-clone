@@ -2,7 +2,7 @@ import type { Page, Route } from "@playwright/test";
 import { MOCK_API_URL } from "../playwright.config";
 
 // テストで使うデータの形（API が返す JSON と同じ形）
-type MockUser = { id: string; email: string; name: string };
+type MockUser = { id: string; email: string; name: string; isGuest: boolean };
 type MockNote = {
 	id: number;
 	title: string | null;
@@ -20,6 +20,21 @@ export const testUser: MockUser = {
 	id: "test-user",
 	email: "test@example.com",
 	name: "テストユーザー",
+	isGuest: false,
+};
+
+// 「ゲストで試す」で作られるユーザー（本物の API と同じく isGuest: true）
+export const guestUser: MockUser = {
+	id: "guest-user",
+	email: "guest-1234@guest.local",
+	name: "ゲスト",
+	isGuest: true,
+};
+
+// トークン → ユーザー の対応表。/auth/me で「このトークンは誰か」を引くのに使う
+const usersByToken: Record<string, MockUser> = {
+	"test-token": testUser,
+	"guest-token": guestUser,
 };
 
 // テスト用のノートを作る（id・タイトル・親・並び順以外は決まった値で埋める）
@@ -58,10 +73,15 @@ export const mockApi = async (page: Page, options: { notes?: MockNote[] } = {}) 
 			return route.fulfill({ json: { user: testUser, token: "test-token" } });
 		}
 
-		// ログイン中のユーザー：トークンが付いていればユーザー、なければ null（未ログイン）
+		// ゲストで試す：本物と同じく、ゲストのユーザーとトークンを返す
+		if (method === "POST" && path === "/auth/guest") {
+			return route.fulfill({ json: { user: guestUser, token: "guest-token" } });
+		}
+
+		// ログイン中のユーザー：付いているトークンからユーザーを引く。知らないトークン・なしなら null（未ログイン）
 		if (method === "GET" && path === "/auth/me") {
-			const isSignedIn = request.headers()["authorization"] === "Bearer test-token";
-			return route.fulfill({ json: isSignedIn ? testUser : null });
+			const token = request.headers()["authorization"]?.replace("Bearer ", "") ?? "";
+			return route.fulfill({ json: usersByToken[token] ?? null });
 		}
 
 		// サイドバーのノート一覧（一番上の階層だけ）。本物と同じく position の小さい順

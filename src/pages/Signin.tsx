@@ -4,24 +4,47 @@ import { authRepository } from "../modules/auth/auth.repository";
 import { useAtom } from "jotai";
 import { currentUserAtom } from "../modules/auth/current-user.state";
 import { Navigate } from "react-router-dom";
+import type { User } from "../modules/users/user.entity";
 
 export default function Signin() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [isGuestSubmitting, setIsGuestSubmitting] = useState(false);
+
+	const handleAuthSuccess = (user: User, token: string) => {
+		setCurrentUser(user); //ログインした後もuserを使いまわせる
+		localStorage.setItem("token", token);
+	};
+
+	const handleAuthError = (error: unknown) => {
+		console.error(error);
+		alert("ログインに失敗しました。");
+	}
 
 	const signin = async () => {
 		setIsSubmitting(true);
 		try {
 			const { user, token } = await authRepository.signin(email, password);
-			setCurrentUser(user); //ログインした後もuserを使いまわせる
-			localStorage.setItem("token", token);
+			handleAuthSuccess(user, token);
 		} catch (error) {
-			console.error(error);
-			alert("ログインに失敗しました。");
+			handleAuthError(error);
 		} finally {
 			setIsSubmitting(false);
+		}
+	};
+
+	// authRepository.guest() を呼んで、ログインと同じように user と token を保存する
+	const signinAsGuest = async () => {
+		setIsGuestSubmitting(true);
+		try {
+			const { user, token } = await authRepository.guest();
+			handleAuthSuccess(user, token);
+		} catch (error) {
+			handleAuthError(error);
+		} finally {
+			setIsGuestSubmitting(false);
 		}
 	};
 
@@ -75,12 +98,28 @@ export default function Signin() {
 							<div>
 								<button
 									onClick={signin}
-									disabled={!email || !password || isSubmitting}
+									disabled={!email || !password || isSubmitting || isGuestSubmitting}
 									className="home-button"
 									style={{ width: "100%" }}
 								>
-									ログイン
+									{isSubmitting ? "準備中" : "ログイン"}
 								</button>
+							</div>
+							<div className="auth-divider" role="separator">
+								または
+							</div>
+							<div>
+								<button
+									type="button"
+									onClick={signinAsGuest}
+									disabled={isSubmitting || isGuestSubmitting}
+									className="auth-guest-button"
+								>
+									{isGuestSubmitting ? "準備中" : "ゲストで試す"}
+								</button>
+								<p className="auth-guest-note">
+									登録なしで試せます（データは 24 時間で消えます）
+								</p>
 							</div>
 						</div>
 					</div>
