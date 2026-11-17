@@ -77,3 +77,58 @@
 .auth-link {
   text-decoration: underline;
 }
+
+/* 「または」の区切り線 */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-size: var(--font-sm);
+  color: var(--color-muted-foreground);
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border);
+}
+
+/* ゲストで試す：ログインより控えめな、枠線だけのボタン */
+.auth-guest-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-card);
+  color: var(--color-foreground);
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: background-color var(--transition-base) ease-in-out;
+}
+
+.auth-guest-button:hover:not(:disabled) {
+  background-color: var(--color-muted);
+}
+
+.auth-guest-button:focus-visible {
+  outline: 2px solid var(--color-slate-500);
+  outline-offset: 2px;
+}
+
+.auth-guest-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.auth-guest-note {
+  margin-top: var(--spacing-2);
+  font-size: var(--font-xs);
+  color: var(--color-muted-foreground);
+  text-align: center;
+}

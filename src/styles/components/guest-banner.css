@@ -1,0 +1,23 @@
+/* ゲストで利用中のお知らせ（サイドバーの上） */
+.guest-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  margin: var(--spacing-2) var(--spacing-3);
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-card);
+  font-size: var(--font-xs);
+  color: var(--color-muted-foreground);
+}
+
+.guest-banner-icon {
+  flex-shrink: 0;
+  margin-top: 0.125rem; /* 文字の1行目と高さをそろえる */
+}
+
+.guest-banner-message {
+  margin: 0;
+  line-height: 1.5;
+}
