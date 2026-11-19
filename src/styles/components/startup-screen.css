@@ -1,0 +1,80 @@
+/* アプリを開いた直後の待ち画面（画面の真ん中に出す） */
+.startup-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  min-height: 100vh;
+  padding: var(--spacing-6);
+  text-align: center;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* くるくる回る印。最初の 0.5 秒は出さない（すぐ返事が来たときに、ちらつかないように） */
+.startup-spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-muted-foreground);
+  border-radius: 50%;
+  opacity: 0;
+  animation:
+    startupSpin 0.8s linear infinite,
+    fadeIn var(--transition-slow) ease-out 0.5s forwards;
+}
+
+@keyframes startupSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.startup-message {
+  margin: 0;
+  font-size: var(--font-base);
+  font-weight: var(--font-medium);
+  animation: fadeIn var(--transition-slow) ease-out;
+}
+
+.startup-sub-message {
+  margin: 0;
+  font-size: var(--font-sm);
+  line-height: 1.6;
+  color: var(--color-muted-foreground);
+  animation: fadeIn var(--transition-slow) ease-out;
+}
+
+.startup-error-icon {
+  color: var(--color-destructive);
+}
+
+.startup-retry-button {
+  margin-top: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-card);
+  color: var(--color-foreground);
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: background-color var(--transition-base) ease-in-out;
+}
+
+.startup-retry-button:hover {
+  background-color: var(--color-muted);
+}
+
+.startup-retry-button:focus-visible {
+  outline: 2px solid var(--color-slate-500);
+  outline-offset: 2px;
+}
+
+/* 動きを減らす設定の人には、回転を止める */
+@media (prefers-reduced-motion: reduce) {
+  .startup-spinner {
+    animation: fadeIn var(--transition-slow) ease-out 0.5s forwards;
+  }
+}

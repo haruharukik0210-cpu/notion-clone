@@ -13,6 +13,7 @@
 @import './styles/components/trash-modal.css';
 @import './styles/components/archived-banner.css';
 @import './styles/components/guest-banner.css';
+@import './styles/components/startup-screen.css';
 @import './styles/components/favorite.css';
 @import './styles/components/icon.css';
 @import './styles/pages/auth.css';
