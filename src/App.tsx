@@ -9,9 +9,14 @@ import { currentUserAtom } from "./modules/auth/current-user.state";
 import { useAtomValue, useSetAtom } from "jotai";
 import { authRepository } from "./modules/auth/auth.repository";
 import { themeAtom } from "./modules/theme/theme.state";
+import type {StartupStatus} from "./components/StartupScreen";
+import StartupScreen from "./components/StartupScreen";
+
+
 
 function App() {
 	const [isLoading, setIsLoading] = useState(true);
+	const [status, setStatus] = useState<StartupStatus>("waiting");
 	const setCurrentUser = useSetAtom(currentUserAtom);
 	const theme = useAtomValue(themeAtom);
 
@@ -20,22 +25,30 @@ function App() {
 		localStorage.setItem("theme", theme);
 	}, [theme]);
 
-	
 	useEffect(() => {
 		const fetchCurrentUser = async () => {
+			const timerId = setTimeout(() => {
+					setStatus("slow");
+			}, 3000);
 			try {
 				const user = await authRepository.getCurrentUser();
 				setCurrentUser(user);
+				setIsLoading(false);
 			} catch (error) {
 				console.error(error);
+				setStatus("error");
 			} finally {
-				setIsLoading(false);
+				clearTimeout(timerId);
 			}
 		};
 		fetchCurrentUser();
 	}, [setCurrentUser]);
 
-	if (isLoading) return <div />;
+	const handleRetry = () => {
+		window.location.reload();
+	};
+
+	if (isLoading) return <StartupScreen status={status} onRetry={handleRetry} />;
 
 	return (
 		<BrowserRouter>
