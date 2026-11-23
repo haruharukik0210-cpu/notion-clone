@@ -104,13 +104,14 @@ export default function NoteList({ layer = 0, parentId }: Props) {
 		)
 		.sort((a, b) => a.position - b.position);
 
-	// TODO（あなたが書く）：離したときの処理
 	// 今は「何を、どこに落としたか」を console に出すだけ
 	const handleDragEnd = async (event: DragEndEvent) => {
+		const activeId = Number(event.active.id);
+		const overId = Number(event.over?.id);
+		if (!overId || activeId === overId) return;
 		const preOrderedNotes = [...visibleNotes];
 		try {
-			const newOrderedNotes = reorderNotes(preOrderedNotes, Number(event.active.id), Number(event.over?.id));
-			if(!Number(event.over?.id)) return;
+			const newOrderedNotes = reorderNotes(preOrderedNotes, activeId, overId);
 			noteStore.set(newOrderedNotes);
 			await noteRepository.reorder(newOrderedNotes.map(note => note.id));
 		} catch (error) {

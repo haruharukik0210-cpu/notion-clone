@@ -1,6 +1,6 @@
 import axios from "axios";
-import { addAuthorizationHeader } from "./ interceptors/request";
-import { errorHandler } from "./ interceptors/response";
+import { addAuthorizationHeader } from "./interceptors/request";
+import { errorHandler } from "./interceptors/response";
 
 const baseURL = import.meta.env.VITE_API_URL;
 const api = axios.create({ baseURL });
