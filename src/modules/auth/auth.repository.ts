@@ -19,7 +19,7 @@ export const authRepository = {
 		email: string,
 		password: string,
 	): Promise<{ user: User; token: string }> {
-		const result = await api.post("auth/signin", {
+		const result = await api.post("/auth/signin", {
 			email,
 			password,
 		});
@@ -32,7 +32,7 @@ export const authRepository = {
 		return new User(result.data);
 	},
 	async guest(): Promise<{ user: User; token: string }> {
-		const result = await api.post("auth/guest");
+		const result = await api.post("/auth/guest");
 		const { user, token } = result.data;
 		return { user: new User(user), token };
 	},
