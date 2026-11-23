@@ -171,7 +171,7 @@ describe("reorderNotes", () => {
 				2,
 			),
 		).toEqual([
-            createNote(2, "Note 2", null, 0),
+			createNote(2, "Note 2", null, 0),
 			createNote(1, "Note 1", null, 1),
 			createNote(3, "Note 3", null, 2),
 		]);
@@ -193,7 +193,7 @@ describe("reorderNotes", () => {
 			createNote(3, "Note 3", null, 2),
 		]);
 	});
-	it("ドラッグして移動せずに落とす", () => {
+	it("存在しないノートを移動させる", () => {
 		expect(
 			reorderNotes(
 				[
@@ -210,7 +210,7 @@ describe("reorderNotes", () => {
 			createNote(3, "Note 3", null, 2),
 		]);
 	});
-	it("ドラッグして移動せずに落とす", () => {
+	it("ノートを存在しない場所に移動させる", () => {
 		expect(
 			reorderNotes(
 				[
@@ -222,6 +222,21 @@ describe("reorderNotes", () => {
 				9,
 			),
 		).toEqual([
+			createNote(1, "Note 1", null, 0),
+			createNote(2, "Note 2", null, 1),
+			createNote(3, "Note 3", null, 2),
+		]);
+	});
+	it("渡したノートの配列が変わっていないか", () => {
+		const notes = [
+			createNote(1, "Note 1", null, 0),
+			createNote(2, "Note 2", null, 1),
+			createNote(3, "Note 3", null, 2),
+		];
+		const activeId = 3;
+		const overId = 1;
+		reorderNotes(notes, activeId, overId);
+		expect(notes).toEqual([
 			createNote(1, "Note 1", null, 0),
 			createNote(2, "Note 2", null, 1),
 			createNote(3, "Note 3", null, 2),
